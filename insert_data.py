@@ -39,7 +39,7 @@ def create_schema(conn):
     
 def create_table(conn):
     query= """
-    CREATE TABLE dev.raw_weather_data (
+    CREATE TABLE IF NOT EXISTS dev.raw_weather_data (
     id SERIAL PRIMARY KEY,
     
     -- Location info
@@ -96,12 +96,86 @@ def create_table(conn):
         raise
 
 
-        
+   
+
+def inserting_data(conn, data):
+    query = """
+    INSERT INTO dev.raw_weather_data (
+        location_name, region, country, lat, lon, tz_id, local_time,
+        last_updated, temp_c, temp_f, is_day, condition_text, condition_icon, condition_code,
+        wind_mph, wind_kph, wind_degree, wind_dir, pressure_mb, pressure_in,
+        precip_mm, precip_in, humidity, cloud, feelslike_c, feelslike_f,
+        windchill_c, heatindex_f, dewpoint_c, dewpoint_f, vis_km, vis_miles,
+        gust_mph, gust_kph
+    )
+    VALUES (
+        %(location_name)s, %(region)s, %(country)s, %(lat)s, %(lon)s, %(tz_id)s, %(local_time)s,
+        %(last_updated)s, %(temp_c)s, %(temp_f)s, %(is_day)s, %(condition_text)s, %(condition_icon)s, %(condition_code)s,
+        %(wind_mph)s, %(wind_kph)s, %(wind_degree)s, %(wind_dir)s, %(pressure_mb)s, %(pressure_in)s,
+        %(precip_mm)s, %(precip_in)s, %(humidity)s, %(cloud)s, %(feelslike_c)s, %(feelslike_f)s,
+        %(windchill_c)s, %(heatindex_f)s, %(dewpoint_c)s, %(dewpoint_f)s, %(vis_km)s, %(vis_miles)s,
+        %(gust_mph)s, %(gust_kph)s
+    );
+    """
+
+    values = {
+        "location_name": data["location"]["name"],
+        "region": data["location"]["region"],
+        "country": data["location"]["country"],
+        "lat": data["location"]["lat"],
+        "lon": data["location"]["lon"],
+        "tz_id": data["location"]["tz_id"],
+        "local_time": data["location"]["localtime"],
+
+        "last_updated": data["current"]["last_updated"],
+        "temp_c": data["current"]["temp_c"],
+        "temp_f": data["current"]["temp_f"],
+        "is_day": bool(data["current"]["is_day"]),
+        "condition_text": data["current"]["condition"]["text"],
+        "condition_icon": data["current"]["condition"]["icon"],
+        "condition_code": data["current"]["condition"]["code"],
+
+        "wind_mph": data["current"]["wind_mph"],
+        "wind_kph": data["current"]["wind_kph"],
+        "wind_degree": data["current"]["wind_degree"],
+        "wind_dir": data["current"]["wind_dir"],
+        "pressure_mb": data["current"]["pressure_mb"],
+        "pressure_in": data["current"]["pressure_in"],
+        "precip_mm": data["current"]["precip_mm"],
+        "precip_in": data["current"]["precip_in"],
+        "humidity": data["current"]["humidity"],
+        "cloud": data["current"]["cloud"],
+        "feelslike_c": data["current"]["feelslike_c"],
+        "feelslike_f": data["current"]["feelslike_f"],
+        "windchill_c": data["current"]["windchill_c"],
+        "heatindex_f": data["current"]["heatindex_f"],
+        "dewpoint_c": data["current"]["dewpoint_c"],
+        "dewpoint_f": data["current"]["dewpoint_f"],
+        "vis_km": data["current"]["vis_km"],
+        "vis_miles": data["current"]["vis_miles"],
+        "gust_mph": data["current"]["gust_mph"],
+        "gust_kph": data["current"]["gust_kph"]
+    }
+
+    try:
+        print("Inserting data...")
+        cursor = conn.cursor()
+        cursor.execute(query, values)
+        conn.commit()
+        print("Data inserted successfully.")
+        cursor.close()
+
+    except psycopg2.Error as e:
+        print(f"An error occurred while inserting data: {e}")
+        raise
+  
 conn = connect_to_db()
 if conn:
     print("Connected to the database successfully.")
     create_schema(conn)
     create_table(conn)
+    data = mock_data()  
+    inserting_data(conn, data)
     
     conn.close()
     print("Connection closed.")
