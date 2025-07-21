@@ -57,8 +57,8 @@ x-airflow-common:
     AIRFLOW__CORE__EXECUTOR: CeleryExecutor
     AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://weather_streaming:weather_streaming@postgres/weather_streaming
     # For backward compatibility, with Airflow <2.3
-    AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
-    AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://airflow:airflow@postgres/airflow
+    AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://weather_streaming:weather_streaming@postgres/weather_streaming
+    AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://weather_streaming:weather_streaming@postgres/weather_streaming
     AIRFLOW__CELERY__BROKER_URL: redis://:@redis:6379/0
     AIRFLOW__CORE__FERNET_KEY: ''
     AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
@@ -93,7 +93,7 @@ services:
       POSTGRES_PASSWORD: weather_streaming
       POSTGRES_DB: weather_streaming
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U airflow"]
+      test: ["CMD-SHELL", "pg_isready -U weather_streaming"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -132,6 +132,8 @@ services:
       timeout: 10s
       retries: 5
     restart: always
+    env_file:
+      - .env
     depends_on:
       <<: *airflow-common-depends-on
       airflow-init:
@@ -148,6 +150,8 @@ services:
       timeout: 10s
       retries: 5
     restart: always
+    env_file:
+      - .env
     depends_on:
       <<: *airflow-common-depends-on
       airflow-init:
@@ -177,6 +181,8 @@ services:
       # See https://airflow.apache.org/docs/docker-stack/entrypoint.html#signal-propagation
       DUMB_INIT_SETSID: "0"
     restart: always
+    env_file:
+      - .env
     depends_on:
       <<: *airflow-common-depends-on
       airflow-init:
@@ -193,6 +199,8 @@ services:
       timeout: 10s
       retries: 5
     restart: always
+    env_file:
+      - .env
     depends_on:
       <<: *airflow-common-depends-on
       airflow-init:
@@ -223,6 +231,8 @@ services:
       _AIRFLOW_WWW_USER_PASSWORD: ${_AIRFLOW_WWW_USER_PASSWORD:-airflow}
       _PIP_ADDITIONAL_REQUIREMENTS: 'apache-airflow-providers-microsoft-mssql'
     user: "0:0"
+    env_file:
+      - .env
     networks:
       - confluent
     volumes:
@@ -232,6 +242,8 @@ services:
     <<: *airflow-common
     profiles:
       - debug
+    env_file:
+      - .env
     environment:
       <<: *airflow-common-env
       CONNECTION_CHECK_MAX_COUNT: "0"

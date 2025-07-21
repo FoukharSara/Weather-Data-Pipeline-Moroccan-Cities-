@@ -1,4 +1,4 @@
-from streaming_data import  mock_data
+from utils.streaming_data import  mock_data
 import json
 # download the psycopg2-binary package
 import psycopg2
@@ -14,7 +14,7 @@ def connect_to_db():
             dbname="weather_streaming",
             user="weather_streaming",
             password=password,
-            host="localhost",
+            host="postgres",  
             port="5432"
         )
         return conn
@@ -170,7 +170,7 @@ def inserting_data(conn, data):
         raise
   
 
-if __name__ == "__main__":
+def main():
     conn = connect_to_db()
     if conn:
         print("Connected to the database successfully.")
