@@ -169,14 +169,16 @@ def inserting_data(conn, data):
         print(f"An error occurred while inserting data: {e}")
         raise
   
-conn = connect_to_db()
-if conn:
-    print("Connected to the database successfully.")
-    create_schema(conn)
-    create_table(conn)
-    data = mock_data()  
-    inserting_data(conn, data)
-    
-    conn.close()
-    print("Connection closed.")
+
+if __name__ == "__main__":
+    conn = connect_to_db()
+    if conn:
+        print("Connected to the database successfully.")
+        create_schema(conn)
+        create_table(conn)
+        data = mock_data()  
+        inserting_data(conn, data)
+        
+        conn.close()
+        print("Connection closed.")
 
