@@ -1,0 +1,22 @@
+
+services:
+  db:
+    image: postgres:15   
+    container_name: my_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: weather_streaming
+      POSTGRES_PASSWORD: weather_streaming
+      POSTGRES_DB: weather_streaming
+    networks:
+      - weather_network
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
+
+networks:
+  weather_network:
