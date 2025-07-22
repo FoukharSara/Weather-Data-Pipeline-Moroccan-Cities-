@@ -34,7 +34,7 @@ with dag:
     task2 = DockerOperator(
         task_id="dbt_run",
         image="fishtownanalytics/dbt:1.0.0",
-        command="run",
+        command="run --select dag1",
         docker_url="unix://var/run/docker.sock",
         network_mode="weatherdatapipeline_morccan_confluent",
         working_dir="/usr/app/dbt_project",

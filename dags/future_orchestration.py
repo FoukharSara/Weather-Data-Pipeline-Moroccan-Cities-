@@ -31,27 +31,27 @@ with dag:
     )
     # #task2
     
-    # task2 = DockerOperator(
-    #     task_id="dbt_run",
-    #     image="fishtownanalytics/dbt:1.0.0",
-    #     command="run",
-    #     docker_url="unix://var/run/docker.sock",
-    #     network_mode="weatherdatapipeline_morccan_confluent",
-    #     working_dir="/usr/app/dbt_project",
-    #     mounts=[
-    #         Mount(
-    #             source="C:/Users/x1 carbon/Desktop/Weather Data Pipeline_Morccan/dbt_project",
-    #             target="/usr/app/dbt_project",
-    #             type="bind"
-    #         ),
-    #         Mount(
-    #             source="C:/Users/x1 carbon/Desktop/Weather Data Pipeline_Morccan/profiles.yml",
-    #             target="/root/.dbt/profiles.yml",
-    #             type="bind"
-    #         )
+    task2 = DockerOperator(
+        task_id="dbt_run",
+        image="fishtownanalytics/dbt:1.0.0",
+        command="run --select dag2",
+        docker_url="unix://var/run/docker.sock",
+        network_mode="weatherdatapipeline_morccan_confluent",
+        working_dir="/usr/app/dbt_project",
+        mounts=[
+            Mount(
+                source="C:/Users/x1 carbon/Desktop/Weather Data Pipeline_Morccan/dbt_project",
+                target="/usr/app/dbt_project",
+                type="bind"
+            ),
+            Mount(
+                source="C:/Users/x1 carbon/Desktop/Weather Data Pipeline_Morccan/profiles.yml",
+                target="/root/.dbt/profiles.yml",
+                type="bind"
+            )
                 
-    #     ],
-    #     auto_remove='success',
-    # )
+        ],
+        auto_remove='success',
+    )
     
-    # task1 >> task2
+    task1 >> task2

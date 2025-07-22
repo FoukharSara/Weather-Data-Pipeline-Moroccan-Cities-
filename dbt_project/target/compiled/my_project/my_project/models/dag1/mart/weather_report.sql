@@ -1,7 +1,4 @@
-{{config(
-    materialized='table',
-    unique_key='id'
-)}}
+
 
 select 
     city,
@@ -11,4 +8,4 @@ select
     humidity,
     wind_Speed_KPH,
     pressure_MB
-from {{ ref('stg_weather_data') }}
+from "weather_streaming"."dev"."stg_weather_data"

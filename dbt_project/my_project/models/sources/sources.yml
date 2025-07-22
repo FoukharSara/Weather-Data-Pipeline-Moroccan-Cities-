@@ -40,3 +40,18 @@ sources:
           - name: vis_miles
           - name: gust_mph
           - name: gust_kph
+
+
+      - name: future_raw_data
+        columns:
+          - name: id
+          - name: location_name
+          - name: country
+          - name: forecast_date
+          - name: forecast_time
+          - name: temp_c
+          - name: condition
+          - name: wind_kph
+          - name: humidity
+          - name: chance_of_rain
+          
