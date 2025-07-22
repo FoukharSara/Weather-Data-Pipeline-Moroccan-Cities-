@@ -1,0 +1,42 @@
+version: 2
+
+sources:
+  - name: dev
+    database: weather_streaming
+    tables:
+      - name: raw_weather_data
+        columns:
+          - name: location_name
+          - name: region
+          - name: country
+          - name: lat
+          - name: lon
+          - name: tz_id
+          - name: local_time
+          - name: last_updated
+          - name: temp_c
+          - name: temp_f
+          - name: is_day
+          - name: condition_text
+          - name: condition_icon
+          - name: condition_code
+          - name: wind_mph
+          - name: wind_kph
+          - name: wind_degree
+          - name: wind_dir
+          - name: pressure_mb
+          - name: pressure_in
+          - name: precip_mm
+          - name: precip_in
+          - name: humidity
+          - name: cloud
+          - name: feelslike_c
+          - name: feelslike_f
+          - name: windchill_c
+          - name: heatindex_f
+          - name: dewpoint_c
+          - name: dewpoint_f
+          - name: vis_km
+          - name: vis_miles
+          - name: gust_mph
+          - name: gust_kph
