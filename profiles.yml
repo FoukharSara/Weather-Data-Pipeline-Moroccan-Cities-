@@ -1,0 +1,12 @@
+my_project:  # use your actual dbt project name
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: postgres
+      user: weather_streaming
+      password: weather_streaming
+      port: 5432
+      dbname: weather_streaming
+      schema: dev
+      threads: 4

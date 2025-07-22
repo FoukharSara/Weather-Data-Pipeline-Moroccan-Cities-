@@ -14,7 +14,7 @@ dag =  DAG(
     "orchestration_weather",
     default_args=default_args,
     catchup=False,
-    schedule_interval="@daily",
+    schedule= timedelta(minutes=1),
 )
 def data_ingestion():
     from utils.insert_data import main
@@ -23,7 +23,7 @@ def data_ingestion():
 with dag:   
     #task1
     task1 = PythonOperator(
-        task_id="streaming_data",
+        task_id="ingesting_data",
         python_callable=data_ingestion,
     )
     #task2
