@@ -1,4 +1,4 @@
-from utils.streaming_data import  mock_data
+from utils.streaming_data import  stream_data
 import json
 # download the psycopg2-binary package
 import psycopg2
@@ -176,7 +176,7 @@ def main():
         print("Connected to the database successfully.")
         create_schema(conn)
         create_table(conn)
-        data = mock_data()  
+        data = stream_data("Casablanca")  # You can change the city as needed
         inserting_data(conn, data)
         
         conn.close()

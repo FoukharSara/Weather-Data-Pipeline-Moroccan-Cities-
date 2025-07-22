@@ -7,7 +7,10 @@ from dotenv import load_dotenv
 load_dotenv()
 api_key = os.getenv("API_KEY")
 
-api = f'https://api.weatherapi.com/v1/current.json?key={api_key}&q=Casablanca'
+def get_api_url(city):
+    return f'https://api.weatherapi.com/v1/current.json?key={api_key}&q={city}'
+
+# api = f'https://api.weatherapi.com/v1/current.json?key={api_key}&q=Casablanca'
 
 def get_data(api_key):
     print("Fetching data from API...")
@@ -19,10 +22,10 @@ def get_data(api_key):
         print(f"An error occurred: {e}")
         return None
 
-def stream_data():
+def stream_data(city):
+    api = get_api_url(city)
     data = get_data(api)
-    print(json.dumps(data, indent=4))
-
+    return data
 
 
 def mock_data():
