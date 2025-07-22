@@ -176,7 +176,7 @@ def main():
         print("Connected to the database successfully.")
         create_schema(conn)
         create_table(conn)
-        data = stream_data("Rabat")  # You can change the city as needed
+        data = stream_data("Oujda")  # You can change the city as needed
         inserting_data(conn, data)
         
         conn.close()
