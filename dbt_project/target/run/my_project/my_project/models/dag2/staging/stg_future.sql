@@ -8,6 +8,13 @@
 with source as (
     select *
     from "weather_streaming"."dev"."future_raw_data"
+),
+
+de_dup as (
+    select
+        row_number() over (partition by location_name order by forecast_time) as row_num,
+        *
+    from source
 )
 
 SELECT id,
@@ -20,5 +27,5 @@ SELECT id,
     wind_kph as wind_Speed_KPH,
     humidity as humidity,
     chance_of_rain as chanceOfRain
-FROM source
+FROM de_dup
   );
